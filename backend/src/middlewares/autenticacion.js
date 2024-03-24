@@ -10,7 +10,7 @@ const verificarAutenticacion = async(req,res,next) => {
             next()
         } catch (error) {
             const e = new Error('Formato de token no válido')
-            return res.status(404).json({msg:e.message})
+            return res.status(404).json({msg:[e.message]})
         }
 }
 
