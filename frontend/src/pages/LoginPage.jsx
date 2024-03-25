@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router-dom";
 
 export function LoginPage() {
   const {
@@ -8,21 +9,21 @@ export function LoginPage() {
     formState: { errors },
   } = useForm();
 
-  const { signIn, user, isAuthenticated, errores } = useAuth();
-  
+  const { signIn, user, isAuthenticated, errores: loginErrores } = useAuth();
+
   const onSubmit = handleSubmit((data) => {
-    signIn(data)
+    signIn(data);
     console.log(data);
   });
 
   return (
     <div className="flex h-[calc(100vh-100px)] items-center justify-center">
-      {errores.map((e, index) => (
-        <div className="bg-red-500 p-2 text-white" key={index}>
-          {e}
-        </div>
-      ))}
       <div className="bg-zinc-800 max-w-full p-10 rounded-md">
+        {loginErrores.map((e, index) => (
+          <div className="bg-red-500 p-2 text-white my-2" key={index}>
+            {e}
+          </div>
+        ))}
         <h1 className="text-2xl font-bold">Login</h1>
         <form onSubmit={onSubmit}>
           <input
@@ -45,6 +46,9 @@ export function LoginPage() {
           )}
           <button type="submit">Iniciar Sesión</button>
         </form>
+        <p className="flex gap-x-2 justify-between">
+          ¿No tienes una cuenta aún? <Link to="/register" className="text-sky-500">Registro</Link>
+        </p>
       </div>
     </div>
   );

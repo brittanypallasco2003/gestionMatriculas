@@ -2,18 +2,24 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { RegisterPage } from "./pages/RegisterPage";
 import { LoginPage } from "./pages/LoginPage";
 import { AuthProvider } from "./context/AuthContext";
+import { HomePage } from "./pages/HomePage";
+import { Listar } from "./pages/Listar";
+import { CrearAct } from "./pages/CrearAct";
+import { ProtectedRoute } from "./ProtectedRoute";
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<h1>Home page</h1>} />
+          <Route path="/" element={<HomePage/>} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage/>} />
-          <Route path="/listar" element={<h1>actualizar</h1>} />
-          <Route path="/actualizar" element={<h1>actualizar</h1>} />
-          <Route path="/crear" element={<h1>Crear</h1>} />
-          <Route path="/visualizar/:id" element={<h1>Visualizar</h1>} />
+          <Route element={ProtectedRoute}>
+          <Route path="/listar" element={<Listar/>} />
+          <Route path="/actualizar/:id" element={<CrearAct/>} />
+          <Route path="/crear" element={<CrearAct/>} />
+          <Route path="/visualizar" element={<h1>Visualizar</h1>} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </AuthProvider>

@@ -4,11 +4,11 @@ import Usuario from "../models/Usuario.js"
 
 const loginUsuario = async(req,res) => {
     const {email,password} = req.body
-    if (Object.values(req.body).includes(" ")) return res.status(400).json({msg:'Lo sentimos, debe llenar todos los campos'})
+    if (Object.values(req.body).includes(" ")) return res.status(400).json({msg:['Lo sentimos, debe llenar todos los campos']})
     const usuarioBDD = await Usuario.findOne({email}).select("-__v -updatedAt -createdAt")
-    if (!usuarioBDD) return res.status(404).json({msg:'Lo sentimos, el usuario no se encuentra registrado'})
+    if (!usuarioBDD) return res.status(404).json({msg:['Lo sentimos, el usuario no se encuentra registrado']})
     const verificarPassword = await usuarioBDD.matchPassword(password)
-    if (!verificarPassword) return res.status(404).json({msg:'Lo sentimos, el password no es el correcto'})
+    if (!verificarPassword) return res.status(404).json({msg:['Lo sentimos, el password no es el correcto']})
     
     const token = generarJWT(usuarioBDD._id)
     
@@ -25,7 +25,7 @@ const loginUsuario = async(req,res) => {
 // No necesario
 const registro = async(req,res) => {
     const {email,password} = req.body
-    if (Object.values(req.body).includes(" ")) return res.status(400).json({msg:"Lo sentimos, debes llenar todos los campos"})
+    if (Object.values(req.body).includes(" ")) return res.status(400).json({msg:["Lo sentimos, debes llenar todos los campos"]})
     const verificarEmailBDD = await Usuario.findOne({email})
     if(verificarEmailBDD) return res.status(400).json({msg:["Lo sentimos, el email ya se encuentra registrado"]})
     const nuevoUsuario = new Usuario(req.body)

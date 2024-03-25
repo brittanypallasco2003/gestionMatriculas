@@ -1,4 +1,4 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 import { registerRequest, loginRequest } from "../api/auth.js";
 
 export const AuthContext = createContext();
@@ -34,10 +34,17 @@ const [errores, setErrores]=useState([])
         const res=await loginRequest(user)
         console.log(res.data)
     } catch (error) {
+        console.log(error.response.data)
         setErrores(error.response.data.msg)
-        console.error(error)
     }
   }
+
+    useEffect(()=>{
+       if(errores.length>0){
+        const temporizadorError = setTimeout(()=>setErrores([]),4000)//si pasan 6 segundos se elimina el mensaje de error del backend de la interfaz
+        return()=>clearTimeout(temporizadorError)
+       }
+    },[errores])
 
   return (
     <AuthContext.Provider value={{ signUp, user ,isAuthenticated,errores, signIn}}>
