@@ -17,6 +17,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setAuthenticated] = useState(false); //conocer si el usuario se ha autenticado
   const [errores, setErrores] = useState([]);
+  const [loading, setLoading]=useState(true)
 
   const perfil = async (token) => {
     try {
@@ -28,10 +29,16 @@ export const AuthProvider = ({ children }) => {
         },
       };
       const respuesta = await axios.get(url, options);
+      if(!respuesta.data){
+        setAuthenticated(false);
+        setLoading(false)
+        return
+      }
+      setAuthenticated(true)
       setUser(respuesta.data);
-      setAuthenticated(true);
     } catch (error) {
       console.log(error);
+      setLoading(false)
     }
   };
 
@@ -77,7 +84,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ signUp, user, isAuthenticated, errores, signIn }}
+      value={{ signUp, user, isAuthenticated, errores, signIn, loading }}
     >
       {children}
     </AuthContext.Provider>
