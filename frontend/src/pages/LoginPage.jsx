@@ -1,28 +1,18 @@
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
-export function RegisterPage() {
+export function LoginPage() {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const { signUp, user, isAuthenticated, errores } = useAuth();
-  const navegar = useNavigate();
-
-  useEffect(() => {
-    if (isAuthenticated) navegar("/listar");
-  }, [isAuthenticated]); //cuando isAutheticated (estado) cambia a true
-
-  console.log(user);
-  const onSubmit = handleSubmit(async (values) => {
-    console.log(values);
-    signUp(values);
-    // const res = await registerRequest(values);
-    // console.log(res);
+  const { signIn, user, isAuthenticated, errores } = useAuth();
+  
+  const onSubmit = handleSubmit((data) => {
+    signIn(data)
+    console.log(data);
   });
 
   return (
@@ -33,7 +23,7 @@ export function RegisterPage() {
         </div>
       ))}
       <div className="bg-zinc-800 max-w-full p-10 rounded-md">
-        <h1 className="text-2xl font-bold">Registro</h1>
+        <h1 className="text-2xl font-bold">Login</h1>
         <form onSubmit={onSubmit}>
           <input
             type="email"
@@ -53,11 +43,7 @@ export function RegisterPage() {
           {errors.password && (
             <p className="text-red-500">La contraseña es requerida</p>
           )}
-          <div className="flex justify-center">
-            <button type="submit" className="text">
-              Registrarse
-            </button>
-          </div>
+          <button type="submit">Iniciar Sesión</button>
         </form>
       </div>
     </div>
